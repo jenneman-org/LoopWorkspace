@@ -46,3 +46,8 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             build
+            
+      - name: Discover Profiles Tests
+        run: |
+          find Loop LoopKit -iname '*Profile*Test*.swift'
+          xcrun simctl list devices available
