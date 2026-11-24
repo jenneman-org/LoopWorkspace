@@ -92,9 +92,7 @@ jobs:
 
       # This syncs any target branch to upstream branch of the same name
       - name: Sync upstream changes
-        if: | # do not run the upstream sync action on the upstream repository
-          steps.workflow-permission.outputs.has_permission == 'true' &&
-          vars.SCHEDULED_SYNC != 'false' && github.repository_owner != 'LoopKit'
+        if: false
         id: sync
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.2
         with:
@@ -183,6 +181,10 @@ jobs:
       # Customize Loop: Download and apply patches
       - name: Customize Loop
         run: |
+          # Check Profiles PR 124
+          curl -fL https://raw.githubusercontent.com/loopandlearn/customization/0671e6dbdd47663721c770727a1d988d5b1ca1d6/profiles/nextdev_profiles.patch -o /tmp/profiles.patch
+          git apply --check --whitespace=nowarn /tmp/profiles.patch
+          exit 0
 
           # LoopWorkspace patches
           # -applies any patches located in the LoopWorkspace/patches/ directory
@@ -239,6 +241,7 @@ jobs:
 
       # Upload to TestFlight
       - name: Fastlane upload to TestFlight
+        if: false
         run: bundle exec fastlane release
         env:
           TEAMID: ${{ secrets.TEAMID }}
