@@ -10,7 +10,7 @@ permissions:
 jobs:
   check_profiles:
     if: github.ref_name == 'next-dev-profiles-test'
-    runs-on: ubuntu-latest
+    runs-on: xcode-27
 
     steps:
       - name: Checkout LoopWorkspace
@@ -26,3 +26,12 @@ jobs:
         run: |
           git apply --check --verbose --whitespace=nowarn /tmp/profiles.patch
           echo "Profiles patch compatibility check passed."
+          
+      - name: Apply Profiles Patch
+        run: |
+          git apply --whitespace=nowarn /tmp/profiles.patch
+
+      - name: List Xcode Schemes
+        run: |
+          sudo xcode-select --switch /Applications/Xcode_27.1.app/Contents/Developer
+          xcodebuild -list -workspace LoopWorkspace.xcworkspace
