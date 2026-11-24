@@ -35,3 +35,14 @@ jobs:
         run: |
           sudo xcode-select --switch /Applications/Xcode_27.1.app/Contents/Developer
           xcodebuild -list -workspace LoopWorkspace.xcworkspace
+
+      - name: Build Loop for Simulator
+        run: |
+          xcodebuild \
+            -workspace LoopWorkspace.xcworkspace \
+            -scheme Loop \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
